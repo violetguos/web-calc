@@ -31,8 +31,14 @@ function arrayPopEval(){
         let btn = arrayButtons.pop();
         if(b === 0)
             b = Number(btn);
-        else if(btn === '+')
+        else if(btn === '\u002b')
             cmd = add;
+        else if(btn === '\u2212')
+            cmd = subtract;
+        else if(btn === '\u00f7')
+            cmd = divide;
+        else if(btn === '\u00d7')
+            cmd = multiply;
         else if(a === 0);
             a = Number(btn);
     }
@@ -51,7 +57,7 @@ function numberButtons(){
             btn.addEventListener('click', function() {
                 // get a and b
                 console.log(btn.textContent);
-                // TODO: check whether CLEAR or EQUAL is pressed
+                // pop the array, convert to equation and eval
                 if(btn.textContent === "="){
                     arrayPopEval();
                 }
