@@ -1,3 +1,8 @@
+body{
+    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+
+}
+
 .title{
     text-align: center;
 }
@@ -7,4 +12,26 @@
 
 .display {
     text-align: center;
+}
+
+#result{
+    font-size: 64px;
+}
+
+button{  
+    margin: 5px;      
+    text-align: center;
+    border: none;
+    font-size: 32px;
+    padding: 20px;
+    width: 90px;
+    border-radius: 50%;
+}
+
+.number{
+    background-color: gray;
+}
+.operand{
+    background-color: orange;
+
 }
