@@ -21,8 +21,11 @@ function operate(cmd, a, b){
 }
 
 function arrayPopEval(){
-    // pop the global array elements
-    // only integers for now
+    /* 
+    pop the global array elements
+    only integers for now
+    Pop an array e.g. [3, +, 2] into add(3, 2)
+    */
     let a = 0;
     let b = 0;
     let cmd;
@@ -43,9 +46,11 @@ function arrayPopEval(){
             a = Number(btn);
     }
     console.log("cmd", cmd);
+
     let result = operate(cmd, a, b);
-    console.log(result);
-}
+    const displayRes = document.querySelector("#result");
+    displayRes.textContent = result;
+} 
 
 // button controls
 function numberButtons(){
@@ -55,8 +60,11 @@ function numberButtons(){
     btns.forEach(
         function (btn){
             btn.addEventListener('click', function() {
-                // get a and b
-                console.log(btn.textContent);
+                // get a and b, stored in an array of discrete chars
+                
+                // display the buttons pressed
+                const result = document.querySelector("#result");
+                result.textContent = btn.textContent;
                 // pop the array, convert to equation and eval
                 if(btn.textContent === "="){
                     arrayPopEval();
