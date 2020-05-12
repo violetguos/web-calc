@@ -6,6 +6,10 @@ const opTable = {
     '\u00d7': multiply
 }
 
+// constants
+MAX_DIGITS = 5;
+MAX_ARRAY = 10;
+
 // math functions
 function add(a, b) {
 	return a + b;	
@@ -89,6 +93,17 @@ function mergeNumbersInArray(arr){
     }
 }
 
+function invertOperand(arr){
+    for(let i = 0; i < arr.length; i++){
+        if(arr[i] == add){
+            arr[i] = subtract;
+        }
+        else if(arr[i] == subtract)
+            arr[i] = add;
+    }
+    return arr;
+}
+
 function arrayEvalRecursionHelper(arr){
     /*
     This is a recursion based method to parse an equation. It's probably an overkill,
@@ -107,10 +122,8 @@ function arrayEvalRecursionHelper(arr){
         2) calls subtract(5, 3)
                     
     */
-    console.log(arr.length);
     if(arr.length === 1){
         return arr[0];
-
     }
     else if(arr.length === 3){
         return operate(arr[1], arr[0], arr[2]);
@@ -122,7 +135,12 @@ function arrayEvalRecursionHelper(arr){
                 let cmd = arr[i];
                 let a = arr.slice(0, i);
                 let b = arr.slice(i+1);
-                return operate(cmd, arrayEvalRecursionHelper(a), arrayEvalRecursionHelper(b));
+                // essentially putting a bracket on, needs to invert operation if it's subtract
+                if(cmd == subtract)
+                    return operate(cmd, arrayEvalRecursionHelper(a), 
+                        arrayEvalRecursionHelper(invertOperand(b)));
+                else
+                    return operate(cmd, arrayEvalRecursionHelper(a), arrayEvalRecursionHelper(b));
             } 
         }        
     }
@@ -132,6 +150,8 @@ function arrayPopEval(){
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
     result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
+    if(!Number.isInteger(result))
+        result = result.toFixed(MAX_DIGITS);
     return result;
 }
 
@@ -148,27 +168,33 @@ function numberButtons(){
                 const result = document.querySelector("#result");
                 result.textContent = btn.textContent;
                 // pop the array, convert to equation and eval
-                if(btn.textContent === "="){
+                const eqn = document.querySelector("#equation");
+                // monitor sequence length
+                if(ARRAY_BUTTONS.length > MAX_ARRAY){
+                    // reinit and alrt
+                    ARRAY_BUTTONS = [];
+                    ARRAY_NUMBERS = [];
+                    alert("Equation is too long, reinitializing")
+                    result.textContent = 0;
+                    eqn.textContent = 0;
+                }
+                else if(btn.textContent === "="){
                     result.textContent = arrayPopEval();
-
                     // clean up after one eval
                     ARRAY_BUTTONS = [];
                     ARRAY_NUMBERS = [];
-
                 }
                 else if(btn.textContent === "AC"){
                     // clear everything
-                    console.log("before", ARRAY_BUTTONS);
                     ARRAY_BUTTONS = [];
                     ARRAY_NUMBERS = [];
-
-                    console.log(ARRAY_BUTTONS);
+                    result.textContent = 0;
+                    eqn.textContent = 0;
                 }
                 else{
                     // keep pressing numbers 
                     ARRAY_BUTTONS.push(btn.textContent);
                     // display complete eqn
-                    const eqn = document.querySelector("#equation");
                     eqn.textContent = ARRAY_BUTTONS.join("");
                 }
                 }
