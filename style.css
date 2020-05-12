@@ -10,12 +10,16 @@ body{
     text-align: center;
 }
 
-.display {
+.display, .displayeqn {
     text-align: center;
 }
 
 #result{
     font-size: 64px;
+}
+
+#equation{
+    font-size: 32px;
 }
 
 button{  

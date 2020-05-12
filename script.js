@@ -36,8 +36,16 @@ function isOperand(elem){
     return (elem === '\u002b' || elem === '\u2212'|| elem==='\u00f7' || elem === '\u00d7')?true:false;
 }
 
+function isMultiplyorDivide(elem){
+    // TODO: make this shorter
+    return (elem==='\u00f7' || elem === '\u00d7')?true:false;
+}
+
+
 function arrToNum(arr){
-    /* turns number array in to number, ['2', '3'] into 23 */
+    /* turns number array in to number, ['2', '3'] into 23 
+    TODO: process the digit
+    */
     let num = 0;
     for (let i = 0; i < arr.length; i++){
         num = num *10 + Number(arr[i]);
@@ -45,71 +53,35 @@ function arrToNum(arr){
     return num;
 }
 
-function splitArray(arr){
-    // find the position to slice numbers and operand
-    // ['3', '3', '*', '2'] into ['3', '3'], '*', and ['2']
-    let opIndex = 0;
-    let opIndicesArr = []; // record all the indices of operands
-    let arrOp = [];
+function mergeNumbersInArray(arr){
+    // find the position to merge numbers
+    // ['3', '3', '*', '2'] into [33, '*', 2]
+    let numStart = 0;
+    let numEnd = 0;
 
-    // find all the operands
-    while(opIndex < arr.length){
-        if(isOperand(arr[opIndex])){
-            opIndicesArr.push(opIndex);
+    for(let i=0; i<arr.length; i++){
+        if(isOperand(arr[i])){
+            // record numbers before an operand 
+            numEnd = i;
+            let numSubArr = arr.slice(numStart, numEnd);
+            numStart = numEnd + 1;
+            // add number and operator to the new array
+            ARRAY_NUMBERS.push(arrToNum(numSubArr));
+            ARRAY_NUMBERS.push(arr[i]);
         }
-        opIndex++;
+        else if( i == arr.length - 1){
+            // or end of array
+            numEnd = arr.length;
+            let numSubArr = arr.slice(numStart, numEnd);
+            numStart = numEnd + 1;
+            // add number and operator to the new array
+            ARRAY_NUMBERS.push(arrToNum(numSubArr));
+        }
     }
-
-    // turn into an array of [`a`, `operand`, `b`] s
-    let optArr = [];
-    for(let i = 0; i < opIndicesArr.length; i++){
-        if(i==0){
-            let arrA = arr.slice(0, opIndicesArr[i]);
-            let a = arrToNum(arrA);
-            let arrB = arr.slice(opIndicesArr[i]+1, opIndicesArr[i+1]);
-            let b = arrToNum(arrB);
-            let opFunc = opTable[arr[opIndicesArr[i]]];
-            optArr = [a, opFunc, b];
-        }
-        else{
-            let arrB = arr.slice(opIndicesArr[i]+1, opIndicesArr[i+1]);
-            let b = arrToNum(arrB);
-            let opFunc = opTable[arr[opIndicesArr[i]]];
-            optArr = [opFunc, b];
-        }
-        arrOp.push(optArr);
-    }
-    // console.log(arrOp);
-    return arrOp;
 }
 
 function arrayPopEval(){
-    /* 
-    pop the global array elements
-    only integers for now
-    Pop an array e.g. [3, +, 2] into add(3, 2)
-    */
-    let a = 0;
-    let b = 0;
-    let cmd;
-    let result = 0;
-    let operations = splitArray(arrayButtons);
-
-    // iterate through all the operations, fron left to right
-    for(let i = 0; i<operations.length; i++){
-        if(i === 0){
-            // first equation
-            result = operations[i][1](operations[i][0], operations[i][2]);
-        }
-        else{
-            // accumlated result is now `a`
-            result = operations[i][0](result, operations[i][1]);
-        }
-        console.log("result", result);
-        const displayRes = document.querySelector("#result");
-        displayRes.textContent = result;
-
-    }
+    mergeNumbersInArray(ARRAY_BUTTONS);
 
 }
 
@@ -130,18 +102,24 @@ function numberButtons(){
                 if(btn.textContent === "="){
                     arrayPopEval();
                     // clean up after one eval
-                    arrayButtons = [];
+                    ARRAY_BUTTONS = [];
+                    ARRAY_NUMBERS = [];
 
                 }
                 else if(btn.textContent === "AC"){
                     // clear everything
-                    console.log("before", arrayButtons);
-                    arrayButtons = [];
-                    console.log(arrayButtons);
+                    console.log("before", ARRAY_BUTTONS);
+                    ARRAY_BUTTONS = [];
+                    ARRAY_NUMBERS = [];
+
+                    console.log(ARRAY_BUTTONS);
                 }
                 else{
                     // keep pressing numbers 
-                    arrayButtons.push(btn.textContent);
+                    ARRAY_BUTTONS.push(btn.textContent);
+                    // display complete eqn
+                    const eqn = document.querySelector("#equation");
+                    eqn.textContent = ARRAY_BUTTONS.join("");
                 }
                 }
             )
@@ -152,5 +130,6 @@ function numberButtons(){
 
 // global operands
 let operation; // undefined;
-let arrayButtons = []; // length == 0 when empty
+let ARRAY_BUTTONS = []; // length == 0 when empty
+let ARRAY_NUMBERS = []; // to process ARRAY_BUTTONS
 numberButtons();
