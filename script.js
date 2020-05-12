@@ -47,8 +47,8 @@ function isMultiplyorDivide(elem){
 }
 
 function isAddOrSubtract(elem){
-    return (elem==='\u00f7' || elem===divide ||
-        elem=== '\u00d7' || elem=== multiply)?true:false;
+    return (elem==='\u002b' || elem===add ||
+        elem=== '\u2212' || elem=== subtract)?true:false;
 }
 
 function arrToNum(arr){
@@ -107,22 +107,24 @@ function arrayEvalRecursionHelper(arr){
         2) calls subtract(5, 3)
                     
     */
-    let result = 0;
-    if(arr.length == 1)
+    console.log(arr.length);
+    if(arr.length === 1){
         return arr[0];
-    else if(arr.legnth == 3)
+
+    }
+    else if(arr.length === 3){
         return operate(arr[1], arr[0], arr[2]);
+    }
     else{
         for(let i=0; i<arr.length; i++){
             // split at add or subtract
             if(isAddOrSubtract(arr[i])){
                 let cmd = arr[i];
-                let a = arr[i-1];
-                result = operate(cmd, a, arrayEvalRecursionHelper(arr.slice(2)));
+                let a = arr.slice(0, i);
+                let b = arr.slice(i+1);
+                return operate(cmd, arrayEvalRecursionHelper(a), arrayEvalRecursionHelper(b));
             } 
-        }
-        
-        return result;
+        }        
     }
 }
 
@@ -130,9 +132,7 @@ function arrayPopEval(){
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
     result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
-    
     return result;
-
 }
 
 // button controls
@@ -144,14 +144,13 @@ function numberButtons(){
         function (btn){
             btn.addEventListener('click', function() {
                 // get a and b, stored in an array of discrete chars
-                
                 // display the buttons pressed
                 const result = document.querySelector("#result");
                 result.textContent = btn.textContent;
                 // pop the array, convert to equation and eval
                 if(btn.textContent === "="){
-                    let compt = arrayPopEval();
-                    console.log(compt);
+                    result.textContent = arrayPopEval();
+
                     // clean up after one eval
                     ARRAY_BUTTONS = [];
                     ARRAY_NUMBERS = [];
