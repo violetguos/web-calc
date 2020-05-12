@@ -42,10 +42,14 @@ function isOperand(elem){
 function isMultiplyorDivide(elem){
     // TODO: make this shorter
     return (elem==='\u00f7' || elem === '\u00d7'
-        || elem === multiply || elem == divide
+        || elem === multiply || elem === divide
     )?true:false;
 }
 
+function isAddOrSubtract(elem){
+    return (elem==='\u00f7' || elem===divide ||
+        elem=== '\u00d7' || elem=== multiply)?true:false;
+}
 
 function arrToNum(arr){
     /* turns number array in to number, ['2', '3'] into 23 
@@ -85,39 +89,48 @@ function mergeNumbersInArray(arr){
     }
 }
 
+function arrayEvalRecursionHelper(arr){
+    /*
+    This is a recursion based method to parse an equation. It's probably an overkill,
+    but I ended up with nested and long if else conditions and array splicing
+    that was buggy.
+
+    Given an array of type Number and operands, we would like to parse it by splitting
+    at add or subtract operands, and then further divide them.
+
+    eg. arr = [5, -, 6, /, 2] splits into the following by recursion
+                     -
+        2)    ->    / \
+        1)    ->  5    6 / 2
+                        
+        1) the base case would return 5 itself, and divide(6, 2)
+        2) calls subtract(5, 3)
+                    
+    */
+    let result = 0;
+    if(arr.length == 1)
+        return arr[0];
+    else if(arr.legnth == 3)
+        return operate(arr[1], arr[0], arr[2]);
+    else{
+        for(let i=0; i<arr.length; i++){
+            // split at add or subtract
+            if(isAddOrSubtract(arr[i])){
+                let cmd = arr[i];
+                let a = arr[i-1];
+                result = operate(cmd, a, arrayEvalRecursionHelper(arr.slice(2)));
+            } 
+        }
+        
+        return result;
+    }
+}
+
 function arrayPopEval(){
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
-
-    for(let i=0; i<ARRAY_NUMBERS.length; i++){
-        // check mult or div first
-        if(isMultiplyorDivide(ARRAY_NUMBERS[i])){
-            if(i == 0){
-                // missing a, assuming mult or divide with a = 0, which is 0
-                result = 0;
-                ARRAY_NUMBERS.splice(i, 2, result);
-            }
-            else{
-                // operate(cmd, a, b)
-                result = operate(ARRAY_NUMBERS[i], ARRAY_NUMBERS[i-1] , ARRAY_NUMBERS[i+1]);
-                ARRAY_NUMBERS.splice(i-1, 3, result)
-                i = i -1;
-            }
-        }
-
-        else if(i == 0 && isOperand(ARRAY_NUMBERS[i])){
-            // missing a, assume typical calculator behaviour
-            result = operate(ARRAY_NUMBERS[i], 0, ARRAY_NUMBERS[i+1]);
-            ARRAY_NUMBERS.splice(i, 2, result);
-        }
-        else if(isOperand(ARRAY_NUMBERS[i])){
-            result = operate(ARRAY_NUMBERS[i], ARRAY_NUMBERS[i-1] , ARRAY_NUMBERS[i+1]);
-            ARRAY_NUMBERS.splice(i-1, 3, result)
-            i = i -1;
-
-        }
-        console.log(ARRAY_NUMBERS);
-    }
+    result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
+    
     return result;
 
 }
