@@ -33,12 +33,17 @@ function operate(cmd, a, b){
 
 function isOperand(elem){
     // TODO: make this shorter
-    return (elem === '\u002b' || elem === '\u2212'|| elem==='\u00f7' || elem === '\u00d7')?true:false;
+    return (elem === '\u002b' || elem === '\u2212'|| 
+        elem === add || elem === subtract ||
+    elem==='\u00f7' || elem === '\u00d7' ||
+    elem === divide || elem === multiply )?true:false;
 }
 
 function isMultiplyorDivide(elem){
     // TODO: make this shorter
-    return (elem==='\u00f7' || elem === '\u00d7')?true:false;
+    return (elem==='\u00f7' || elem === '\u00d7'
+        || elem === multiply || elem == divide
+    )?true:false;
 }
 
 
@@ -67,7 +72,7 @@ function mergeNumbersInArray(arr){
             numStart = numEnd + 1;
             // add number and operator to the new array
             ARRAY_NUMBERS.push(arrToNum(numSubArr));
-            ARRAY_NUMBERS.push(arr[i]);
+            ARRAY_NUMBERS.push(opTable[arr[i]]);
         }
         else if( i == arr.length - 1){
             // or end of array
@@ -81,7 +86,39 @@ function mergeNumbersInArray(arr){
 }
 
 function arrayPopEval(){
+    let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
+
+    for(let i=0; i<ARRAY_NUMBERS.length; i++){
+        // check mult or div first
+        if(isMultiplyorDivide(ARRAY_NUMBERS[i])){
+            if(i == 0){
+                // missing a, assuming mult or divide with a = 0, which is 0
+                result = 0;
+                ARRAY_NUMBERS.splice(i, 2, result);
+            }
+            else{
+                // operate(cmd, a, b)
+                result = operate(ARRAY_NUMBERS[i], ARRAY_NUMBERS[i-1] , ARRAY_NUMBERS[i+1]);
+                ARRAY_NUMBERS.splice(i-1, 3, result)
+                i = i -1;
+            }
+        }
+
+        else if(i == 0 && isOperand(ARRAY_NUMBERS[i])){
+            // missing a, assume typical calculator behaviour
+            result = operate(ARRAY_NUMBERS[i], 0, ARRAY_NUMBERS[i+1]);
+            ARRAY_NUMBERS.splice(i, 2, result);
+        }
+        else if(isOperand(ARRAY_NUMBERS[i])){
+            result = operate(ARRAY_NUMBERS[i], ARRAY_NUMBERS[i-1] , ARRAY_NUMBERS[i+1]);
+            ARRAY_NUMBERS.splice(i-1, 3, result)
+            i = i -1;
+
+        }
+        console.log(ARRAY_NUMBERS);
+    }
+    return result;
 
 }
 
@@ -100,7 +137,8 @@ function numberButtons(){
                 result.textContent = btn.textContent;
                 // pop the array, convert to equation and eval
                 if(btn.textContent === "="){
-                    arrayPopEval();
+                    let compt = arrayPopEval();
+                    console.log(compt);
                     // clean up after one eval
                     ARRAY_BUTTONS = [];
                     ARRAY_NUMBERS = [];
