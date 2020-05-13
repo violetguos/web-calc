@@ -8,7 +8,7 @@ const opTable = {
 
 // constants
 MAX_DIGITS = 5;
-MAX_ARRAY = 10;
+MAX_ARRAY = 15;
 
 // math functions
 function add(a, b) {
