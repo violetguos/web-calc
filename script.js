@@ -72,6 +72,13 @@ function arrToNum(arr){
     return num;
 }
 
+class OperationArray{
+    constructor(){
+        
+    }
+}
+
+
 function mergeNumbersInArray(arr){
     // find the position to merge numbers
     // ['3', '3', '*', '2'] into [33, '*', 2]
@@ -152,6 +159,7 @@ function arrayEvalRecursionHelper(arr){
 }
 
 function arrayPopEval(){
+    // main function to performance operation
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
     result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
@@ -205,6 +213,8 @@ function numberButtons(){
                 }
                 else{
                     // keep pressing numbers 
+                    console.log(btn.className);
+                    // if(!(isOperand(ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]) || ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]=='.'))
                     ARRAY_BUTTONS.push(btn.textContent);
                     // display complete eqn
                     eqn.textContent = ARRAY_BUTTONS.join("");
