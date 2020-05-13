@@ -204,6 +204,13 @@ function numberButtons(){
                     result.textContent = 0;
                     eqn.textContent = 0;
                 }
+                else if(btn.textContent === "DEL"){
+                    // delete 1 elem
+                    ARRAY_BUTTONS.pop();
+                    eqn.textContent = ARRAY_BUTTONS.join("");
+                    result.textContent = ARRAY_BUTTONS[ARRAY_BUTTONS.length-1];
+
+                }
                 else{
                     // keep pressing numbers 
                     // if(!(isOperand(ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]) || ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]=='.'))
