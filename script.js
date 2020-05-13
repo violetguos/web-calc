@@ -64,9 +64,9 @@ function arrToNum(arr){
     for (i = 0; i < arr.length && arr[i]!='.'; i++){
         num = num *10 + Number(arr[i]);
     }
-    i++; // go to digit, process it as a float
-    for(; i<arr.length; i++){
-        num = num + arr[i]*(10**(-1*i));
+    // goes to length-1 since indexing by +1 to skip the .
+    for(; i<arr.length -1; i++){
+        num = num + arr[i+1]*(10**(-1*i));
     }
 
     return num;
@@ -206,7 +206,6 @@ function numberButtons(){
                 }
                 else{
                     // keep pressing numbers 
-                    console.log(btn.className);
                     // if(!(isOperand(ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]) || ARRAY_BUTTONS[ARRAY_BUTTONS.length-1]=='.'))
                     ARRAY_BUTTONS.push(btn.textContent);
                     // display complete eqn
