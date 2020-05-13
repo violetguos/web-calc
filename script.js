@@ -24,8 +24,11 @@ function multiply(a, b){
 }
 
 function divide(a, b){
-    if(b === 0)
-        return "Error: divide by 0";
+    if(b === 0){
+        alert("Error: divide by 0");
+        return 0;
+    }
+        
     else
         return a / b;
 }
