@@ -72,13 +72,6 @@ function arrToNum(arr){
     return num;
 }
 
-class OperationArray{
-    constructor(){
-        
-    }
-}
-
-
 function mergeNumbersInArray(arr){
     // find the position to merge numbers
     // ['3', '3', '*', '2'] into [33, '*', 2]

@@ -7,7 +7,7 @@ body{
     border: 3px solid #73AD21;
     max-width: 390px;
     margin: auto;
-    border-radius: 10%;
+    border-radius: 5%;
 }
 
 .title{
@@ -44,8 +44,12 @@ button{
     font-size: 32px;
     padding: 20px;
     width: 80px;
-    border-radius: 50%;
-    
+    border-radius: 50%;   
+}
+
+#zero, #delete{
+    width: 180px;
+    border-radius: 40px;
 }
 
 .number{
