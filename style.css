@@ -3,6 +3,13 @@ body{
 
 }
 
+.calculator{
+    border: 3px solid #73AD21;
+    max-width: 390px;
+    margin: auto;
+    border-radius: 10%;
+}
+
 .title{
     text-align: center;
 }
@@ -13,7 +20,7 @@ body{
 .display, .displayeqn{
     text-align: right;
     max-width: 360px;
-    border: 3px solid #73AD21;
+    /*border: 3px solid #73AD21;*/
     margin: auto;
 }
 
@@ -45,7 +52,7 @@ button{
     background-color: gray;
     color: white;
 }
-.operand{
+.operand, .point{
     background-color: orange;
 
 }

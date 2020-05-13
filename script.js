@@ -58,12 +58,17 @@ function isAddOrSubtract(elem){
 
 function arrToNum(arr){
     /* turns number array in to number, ['2', '3'] into 23 
-    TODO: process the digit
     */
     let num = 0;
-    for (let i = 0; i < arr.length; i++){
+    let i = 0;
+    for (i = 0; i < arr.length && arr[i]!='.'; i++){
         num = num *10 + Number(arr[i]);
     }
+    i++; // go to digit, process it as a float
+    for(; i<arr.length; i++){
+        num = num + arr[i]*(10**(-1*i));
+    }
+
     return num;
 }
 
@@ -149,8 +154,6 @@ function arrayEvalRecursionHelper(arr){
 function arrayPopEval(){
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
-    ARRAY_NUMBERS = equatioanValidator(ARRAY_NUMBERS);
-
     result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
     if(isNaN(result))
         result = "Error";
@@ -207,8 +210,7 @@ function numberButtons(){
                     eqn.textContent = ARRAY_BUTTONS.join("");
                 }
                 }
-            )
-           
+            )           
         }
     )
 }
