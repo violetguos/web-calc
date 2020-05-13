@@ -10,21 +10,20 @@ body{
     text-align: center;
 }
 
-.display{
-    text-align: center;
-}
-
-.displayeqn {
+.display, .displayeqn{
     text-align: right;
-    max-width: 400px;
+    max-width: 360px;
     border: 3px solid #73AD21;
     margin: auto;
+}
 
+
+.displayeqn{
+    color: gray;
 }
 
 #result{
-    font-size: 64px;
-   
+    font-size: 64px; 
 }
 
 #equation{
@@ -37,12 +36,14 @@ button{
     border: none;
     font-size: 32px;
     padding: 20px;
-    width: 90px;
+    width: 80px;
     border-radius: 50%;
+    
 }
 
 .number{
     background-color: gray;
+    color: white;
 }
 .operand{
     background-color: orange;

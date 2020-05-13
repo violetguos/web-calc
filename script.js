@@ -39,7 +39,6 @@ function operate(cmd, a, b){
 }
 
 function isOperand(elem){
-    // TODO: make this shorter
     return (elem === '\u002b' || elem === '\u2212'|| 
         elem === add || elem === subtract ||
     elem==='\u00f7' || elem === '\u00d7' ||
@@ -47,7 +46,6 @@ function isOperand(elem){
 }
 
 function isMultiplyorDivide(elem){
-    // TODO: make this shorter
     return (elem==='\u00f7' || elem === '\u00d7'
         || elem === multiply || elem === divide
     )?true:false;
@@ -74,7 +72,6 @@ function mergeNumbersInArray(arr){
     // ['3', '3', '*', '2'] into [33, '*', 2]
     let numStart = 0;
     let numEnd = 0;
-
     for(let i=0; i<arr.length; i++){
         if(isOperand(arr[i])){
             // record numbers before an operand 
@@ -152,9 +149,14 @@ function arrayEvalRecursionHelper(arr){
 function arrayPopEval(){
     let result = 0;
     mergeNumbersInArray(ARRAY_BUTTONS);
+    ARRAY_NUMBERS = equatioanValidator(ARRAY_NUMBERS);
+
     result = arrayEvalRecursionHelper(ARRAY_NUMBERS);
-    if(!Number.isInteger(result))
+    if(isNaN(result))
+        result = "Error";
+    else if(!Number.isInteger(result))
         result = result.toFixed(MAX_DIGITS);
+
     return result;
 }
 
@@ -182,7 +184,11 @@ function numberButtons(){
                     eqn.textContent = 0;
                 }
                 else if(btn.textContent === "="){
-                    result.textContent = arrayPopEval();
+                    let ans = arrayPopEval();
+                    if(!isNaN(ans))
+                        result.textContent = ans;
+                    else
+                        alert("Invalid operation");
                     // clean up after one eval
                     ARRAY_BUTTONS = [];
                     ARRAY_NUMBERS = [];
