@@ -1,62 +1,103 @@
-body{
-    font-family: "SF Pro Text","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
-
+:root {
+  --calculator-width: 390px;
+  --displayeqn-width: 360px;
+  --result-font: 64px;
+  --equation-font: 32px;
+  --button-font: 32px;
+  --button-padding: 20px;
+  --button-width: 80px;
+  --delete-width: 180px;
+  --delete-board-rad: 40px;
 }
 
-.calculator{
-    border: 3px solid #73AD21;
-    max-width: 390px;
-    margin: auto;
-    border-radius: 5%;
+body {
+  font-family: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica",
+    "Arial", sans-serif;
 }
 
-.title{
-    text-align: center;
+.calculator {
+  border: 3px solid #73ad21;
+  max-width: var(--calculator-width);
+  margin: auto;
+  border-radius: 5%;
+}
+
+.title {
+  text-align: center;
 }
 .container {
-    text-align: center;
+  text-align: center;
 }
 
-.display, .displayeqn{
-    text-align: right;
-    max-width: 360px;
-    /*border: 3px solid #73AD21;*/
-    margin: auto;
+.display,
+.displayeqn {
+  text-align: right;
+  max-width: var(--displayeqn-width);
+  /*border: 3px solid #73AD21;*/
+  margin: auto;
 }
 
-
-.displayeqn{
-    color: gray;
+.displayeqn {
+  color: gray;
 }
 
-#result{
-    font-size: 64px; 
+#result {
+  font-size: var(--result-font);
 }
 
-#equation{
-    font-size: 32px;
+#equation {
+  font-size: var(--equation-font);
 }
 
-button{  
-    margin: 5px;   
-    text-align: center;
-    border: none;
-    font-size: 32px;
-    padding: 20px;
-    width: 80px;
-    border-radius: 50%;   
+button {
+  margin: 5px;
+  text-align: center;
+  border: none;
+  font-size: var(--button-font);
+  padding: var(--button-padding);
+  width: var(--button-width);
+  border-radius: 50%;
 }
 
-#zero, #delete{
-    width: 180px;
-    border-radius: 40px;
+#zero,
+#delete {
+  width: var(--delete-width);
+  border-radius: var(--delete-board-rad);
 }
 
-.number{
-    background-color: gray;
-    color: white;
+.number {
+  background-color: gray;
+  color: white;
 }
-.operand, .point{
-    background-color: orange;
+.operand,
+.point {
+  background-color: orange;
+}
 
+@media (max-width: 700px) {
+  :root {
+    --calculator-width: 60%;
+    --displayeqn-width: calc(var(--calculator-width) - 30);
+    --result-font: 32px;
+    --equation-font: 16px;
+    --button-font: 16px;
+    --button-padding: 10px;
+    --button-width: 40px;
+    --delete-width: 90px;
+    --delete-board-rad: 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  :root {
+    --calculator-width: 80%;
+    --displayeqn-width: calc(var(--calculator-width) - 30);
+    --result-font: 32px;
+    --equation-font: 16px;
+    --button-font: 16px;
+    --button-padding: 10px;
+    --button-width: 40px;
+    --delete-width: 90px;
+    --delete-board-rad: 20px;
+  }
 }
